@@ -584,6 +584,111 @@ int LastStoneWeight(int[] stones)
     return maxHeap.Count == 1 ? maxHeap.Dequeue() : 0;
 }
 
+// ************ Subarray sum
+// Level: Easy
+// Method: Slide window
+// UNSOLVED
+
+var totalSubarray = SubarraySum(new int[] { 1, 2, 1 }, 3);
+
+int SubarraySum(int[] nums, int k)
+{
+    int sum = 0, totalSubarray = 0;
+    int left = 0, right = 0, n = nums.Length;
+
+    while (left < n && right < n)
+    {
+        sum += nums[right];
+
+        if (sum == k)
+            totalSubarray++;
+
+        if (sum <= k && right + 1 < n)
+            right++;
+        else
+            sum -= nums[left++];
+    }
+
+    return totalSubarray;
+}
+
+
+//**************** Palindrome II
+// Level: Easy
+// Method: 
+// Time: O(n logn)
+// Space: O(n)
+
+var isPalindrome = ValidPalindrome("aabcbava");
+
+bool ValidPalindrome(string word)
+{
+    int left = 0;
+    int right = word.Length - 1;
+    bool isPalindrome = true;
+
+    while (left < right && isPalindrome)
+    {
+        if (word[left] != word[right])
+            isPalindrome = IsPalindrome(word, left + 1, right) || IsPalindrome(word, left, right - 1);
+
+        if (!isPalindrome)
+            return false;
+
+        left++;
+        right--;
+    }
+
+    return isPalindrome;
+}
+
+bool IsPalindrome(string word, int left, int right)
+{
+    while (right > left)
+    {
+        if (word[left] != word[right])
+            return false;
+
+        right--;
+        left++;
+    }
+
+    return true;
+}
+
+
+//**************** Add string
+// Level: Easy
+// Method: 
+// Time: O(n logn)
+// Space: O(n)
+
+var sum = AddStrings("9", "99");
+
+string AddStrings(string num1, string num2)
+{
+    string result = string.Empty;
+    int remaining = 0, i = 0;
+    int n1 = num1.Length - 1;
+    int n2 = num2.Length - 1;
+    int limit = n1 > n2 ? n1 + 1 : n2 + 1;
+
+    while (i < limit)
+    {
+        var x = n1 - i >= 0 ? Char.GetNumericValue(num1[n1 - i]) : 0;
+        var y = n2 - i >= 0 ? Char.GetNumericValue(num2[n2 - i]) : 0;
+
+        var sum = (x + y + remaining) % 10;
+        remaining = x + y + remaining >= 10 ? 1 : 0;
+
+        result = sum.ToString() + result;
+
+        i++;
+    }
+
+    return remaining > 0 ? remaining.ToString() + result : result;
+}
+
 class ListNode
 {
     public int val;
