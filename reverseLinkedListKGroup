@@ -1,0 +1,38 @@
+// Name: Reverse nodes in k group
+// Url: https://leetcode.com/problems/reverse-nodes-in-k-group/solution/
+// Level: Hard
+// Method: recursion, reverse nodes
+// Time: O(n)
+// Space: O(n/2)
+
+var reversedHead = ReverseKGroup(new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5, new ListNode(6)))))), 3);
+
+Console.WriteLine("The reversed head is{0}", reversedHead);
+
+ListNode ReverseKGroup(ListNode head, int k)
+{
+    ListNode curr = head;
+    int count = 0;
+
+    while(count != k && curr != null)
+    {
+        count++;
+        curr = curr.next;
+    }
+
+    if(count == k){
+        curr = ReverseKGroup(curr, k);
+
+        while(count-- > 0)
+        {
+            var temp = head.next;
+            head.next = curr;
+            curr = head;
+            head = temp;
+        }
+
+        head = curr;
+    }
+
+    return head;
+}
